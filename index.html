@@ -176,10 +176,6 @@
     .ask.on { display: block; }
     .ask p { font-size: 14px; color: var(--text-2); }
     .ask p b { color: var(--text); }
-    .ask .msg { margin: 8px 0; padding: 10px 12px; border-radius: 10px; background: var(--surface); border: 1px dashed var(--border); font-size: 14px; overflow-wrap: anywhere; }
-    .ask .msg span { color: var(--text-2); }
-    .ask .copy { width: 100%; min-height: 44px; border: 0; border-radius: 12px; font: inherit; font-weight: 800; color: #fff; background: linear-gradient(135deg, #7b3fe4, #e0457b); cursor: pointer; }
-    .ask .copy.ok { background: linear-gradient(135deg, #03c75a, #00b4a0); }
     details { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 14px 16px; margin-top: 18px; }
     summary { font-weight: 800; cursor: pointer; }
     details li { margin: 8px 0 0 18px; color: var(--text-2); font-size: 15px; }
@@ -397,19 +393,10 @@
       var a = e.target.closest('.add');
       if (a) {
         var p = people[a.dataset.i], w = a.dataset.w, box = document.getElementById('e' + a.dataset.i);
-        var msg = '[한 걸음 마실] ' + p.n + ' ' + w + ' 주소 알려드려요: ';
         if (box.classList.contains('on') && box.dataset.w === w) { box.classList.remove('on'); return; }
         box.dataset.w = w;
-        box.innerHTML = '<p><b>' + esc(w) + ' 주소는 일내조 카톡방에 남겨주세요!</b><br>남기자님이 확인해서 모두의 마실길에 넣어드려요.</p>' +
-          '<div class="msg">' + esc(msg) + '<span>(여기에 주소 붙여넣기)</span></div>' +
-          '<button type="button" class="copy" data-msg="' + esc(msg) + '">문구 복사하기</button>';
+        box.innerHTML = '<p><b>' + esc(w) + ' 주소는 일내조 카톡방에 남겨주세요!</b><br>남기자님이 확인해서 모두의 마실길에 넣어드려요.</p>';
         box.classList.add('on'); return;
-      }
-      var c = e.target.closest('.copy');
-      if (c) {
-        var done = function () { c.textContent = '복사됐어요! 카톡방에 붙여넣기'; c.classList.add('ok'); };
-        try { navigator.clipboard.writeText(c.dataset.msg).then(done, function () { c.textContent = '길게 눌러 직접 복사해 주세요'; }); }
-        catch (err) { c.textContent = '길게 눌러 직접 복사해 주세요'; }
       }
     });
     document.querySelectorAll('[data-f]').forEach(function (b) {
