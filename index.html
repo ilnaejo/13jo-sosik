@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>일내조 한 걸음 마실</title>
+<meta name="theme-color" content="#7b3fe4">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="한걸음 마실">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: 따뜻하고 간결한 아침 체크리스트
+   IDEA: 우편배달부의 순회 장부 — 집집마다 들르고 도장을 찍는다
+   PICTURE: 진행 링(오늘 몇 명 들렀나)과 한 줄씩 넘기는 방문 카드
+   COLOUR and TYPE: 아침 하늘 파랑 #2f5bd3, 종이 흰색, 도장 빨강 #d9462b / Gowun Dodum + Noto Sans KR
+   LAYOUT: 한 칼럼, 휴대폰 엄지 기준 큰 버튼 */
+:root{color-scheme:light dark;--bg:light-dark(#f3f5fb,#11151f);--card:light-dark(#fff,#1a2030);--ink:light-dark(#18202f,#e8ecf5);--mute:light-dark(#5d6679,#9aa4b8);--line:light-dark(#dfe4ef,#2a3246);--blue:#2f5bd3;--red:#d9462b;--ok:light-dark(#e8efff,#22305a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+h1{font:700 30px/1.1 "Gowun Dodum",sans-serif;margin:0 0 4px;text-wrap:balance}
+.sub{color:var(--mute);font-size:14px;margin:0}
+.ring{flex:none;width:92px;height:92px;position:relative}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font:700 20px/1 "Gowun Dodum",sans-serif}
+.ring small{display:block;font:400 12px/1.2 "Noto Sans KR";color:var(--mute);text-align:center}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.bar button{font:inherit;font-size:14px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.bar button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;transition:opacity .2s}
+.card.done{background:var(--ok)}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.name{font:700 19px/1.2 "Gowun Dodum",sans-serif}
+.topic{color:var(--mute);font-size:13px}
+.stamp{flex:none;color:var(--red);font-weight:700;font-size:13px;border:2px solid var(--red);border-radius:6px;padding:0 6px;transform:rotate(-6deg)}
+.links{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:12px 0 10px}
+.links a,.links span,.links button{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;font-weight:700;text-decoration:none;font-size:15px}
+.ig{background:linear-gradient(135deg,#7b3fe4,#b03fc0);color:#fff}
+.bl{background:linear-gradient(135deg,#03c75a,#00a3a0);color:#fff}
+.none{border:1px dashed var(--line);color:var(--mute);font-weight:400!important}
+.add{border:1px dashed var(--blue);color:var(--blue);background:none;font:inherit;cursor:pointer}
+.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.checks label{display:flex;align-items:center;justify-content:center;gap:5px;min-height:40px;padding:0 6px;white-space:nowrap;border-radius:999px;border:1px solid var(--line);font-size:14px;cursor:pointer}
+.checks input{width:18px;height:18px;accent-color:var(--red)}
+.edit{display:none;gap:8px;margin-top:10px}
+.edit.on{display:flex}
+.edit input{flex:1;font:inherit;font-size:16px;min-height:44px;padding:0 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.edit button{font:inherit;min-height:44px;padding:0 14px;border-radius:10px;border:0;background:var(--blue);color:#fff}
+details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-top:18px}
+summary{font-weight:700;cursor:pointer}
+details li{margin:6px 0}
+.foot{color:var(--mute);font-size:13px;margin-top:14px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="ring" aria-hidden="true">
+    <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--line)" stroke-width="4"/><circle id="arc" cx="18" cy="18" r="15.5" fill="none" stroke="#8e44d9" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 100" pathLength="100"/></svg>
+    <b><span><span id="cnt">0</span>/<span id="tot">0</span><small>다녀왔어요</small></span></b>
+  </div>
+  <div>
+    <h1>일내조 한 걸음 마실</h1>
+    <p class="sub" id="today"></p>
+  </div>
+</header>
+
+<div class="bar" role="group" aria-label="보기">
+  <button type="button" data-f="all" aria-pressed="true">전체</button>
+  <button type="button" data-f="todo" aria-pressed="false">아직 안 들른 분</button>
+  <button type="button" id="reset">오늘 체크 지우기</button>
+</div>
+
+<div id="list"></div>
+
+<details>
+  <summary>휴대폰 바탕화면에 저장하기 · 앱에서 더 쉽게 보는 법</summary>
+  <ul>
+    <li><b>갤럭시</b>: 크롬으로 열기 → 오른쪽 위 ⋮ → '홈 화면에 추가' (또는 '설치'). 카톡에서 열었다면 ⋮ → '다른 브라우저로 열기'부터.</li>
+    <li><b>아이폰</b>: 사파리로 열기 → 아래 공유 버튼(□↑) → '홈 화면에 추가'.</li>
+    <li><b>인스타 즐겨찾기</b>: 조원 프로필 → '팔로잉' 버튼 → '즐겨찾기에 추가'. 홈 왼쪽 위 Instagram 글자 → '즐겨찾기'를 누르면 조원 게시물만 모아 보여요.</li>
+    <li><b>인스타 알림</b>: 프로필 오른쪽 위 종 모양 → 게시물·릴스 알림 켜기. 새 글이 올라오면 바로 알려줘요.</li>
+    <li><b>스토리</b>: 프로필 사진 테두리가 색깔이면 24시간 안에 올린 스토리가 있어요. 사진을 누르면 볼 수 있어요.</li>
+    <li><b>네이버 블로그</b>: 이웃 추가 → 블로그 앱 '이웃새글'에서 새 글을 한눈에, 알림도 켤 수 있어요.</li>
+  </ul>
+</details>
+<p class="foot">체크는 이 기기에만 저장되고 날짜가 바뀌면 새로 시작해요. 블로그 주소를 모르는 분은 '블로그 추가'로 넣어 두세요.</p>
+</div>
+
+<script>
+{
+const people=[
+ {n:'수리테이블',t:'퍼실 · 다이어트 레시피',ig:'soori_table',bl:'hshw1006'},
+ {n:'히쌤',t:'퍼실 · 필라테스·체형교정',ig:'enbcare_'},
+ {n:'말리언니',t:'갱년기 관리 정보·강의',ig:'mali_unni'},
+ {n:'늘품',t:'간호사 건강 브랜드',ig:'neulpoom.rn',bl:'neulpoom119'},
+ {n:'아두라비',t:'1인 재활 PT샵',ig:'yong_han_pt'},
+ {n:'새살닥터',t:'한의원 원장',ig:'saesal.doctor',bl:'soso_damdam'},
+ {n:'남기자',t:'AI 소식·생각 글',ig:'kmpark_director',bl:'cavin7126'},
+ {n:'밍키짱',t:'다이어트·필라테스',ig:'minky.zzang'},
+ {n:'빛나는그녀',t:'첫 게시물 업로드',ig:'myttlov2s'},
+ {n:'차곡희',t:'AI 콘텐츠',ig:'chagok.hee'},
+ {n:'으네',t:'B2B 패키지 제작',ig:'cays.kr'},
+ {n:'웰띠마마',t:'건강·식단 기록',ig:'myglowspot'},
+ {n:'yuls(율스)',t:'몸과 마음·명상',ig:''},
+ {n:'박다영',t:'계정 준비 중',ig:''}
+];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const d=new Date(),key='ilnaejo-round-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+const wd='일월화수목금토'[d.getDay()];
+document.getElementById('today').textContent=`${d.getMonth()+1}/${d.getDate()}(${wd}) · 가볍게 한 분씩 마실 다녀와요`;
+const load=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let st=load(key),blogs=load('ilnaejo-blogs'),filter='all';
+const blogId=p=>blogs[p.n]||p.bl||'';
+const blogUrl=v=>/^https?:\/\//.test(v)?v:'https://m.blog.naver.com/'+v;
+const list=document.getElementById('list');
+function render(){
+  let done=0;
+  list.innerHTML=people.map((p,i)=>{
+    const s=st[p.n]||{};const ok=s.seen;if(ok)done++;
+    if(filter==='todo'&&ok)return'';
+    const b=blogId(p);
+    return `<div class="card${ok?' done':''}"><div class="top"><div><div class="name">${esc(p.n)}님</div><div class="topic">${esc(p.t)}</div></div>${ok?'<span class="stamp">다녀감</span>':''}</div>
+    <div class="links">${p.ig?`<a class="ig" href="https://www.instagram.com/${esc(p.ig)}/" target="_blank" rel="noopener">인스타 열기</a>`:'<span class="none">인스타 준비 중</span>'}
+    ${b?`<a class="bl" href="${esc(blogUrl(b))}" target="_blank" rel="noopener">블로그 열기</a>`:`<button type="button" class="add" data-i="${i}">블로그 추가</button>`}</div>
+    <div class="checks"><label><input type="checkbox" data-i="${i}" data-k="seen"${s.seen?' checked':''}>봤어요</label><label><input type="checkbox" data-i="${i}" data-k="like"${s.like?' checked':''}>좋아요</label><label><input type="checkbox" data-i="${i}" data-k="cmt"${s.cmt?' checked':''}>댓글</label></div>
+    <div class="edit" id="e${i}"><input id="in${i}" placeholder="블로그 아이디 또는 주소" value="${esc(b)}"><button type="button" data-save="${i}">저장</button></div></div>`;
+  }).join('')||'<p class="sub">오늘 마실을 모두 다녀왔어요. 고마워요!</p>';
+  const tot=people.length;
+  document.getElementById('cnt').textContent=done;
+  document.getElementById('tot').textContent=tot;
+  document.getElementById('arc').setAttribute('stroke-dasharray',`${done/tot*100} 100`);
+}
+list.addEventListener('change',e=>{
+  const t=e.target,p=people[t.dataset.i];if(!p)return;
+  if(t.classList.contains('ed')){document.getElementById('e'+t.dataset.i).classList.toggle('on',t.checked);return}
+  st[p.n]=st[p.n]||{};st[p.n][t.dataset.k]=t.checked;
+  if(t.dataset.k!=='seen'&&t.checked)st[p.n].seen=true;
+  save(key,st);render();
+});
+list.addEventListener('click',e=>{
+  const a=e.target.closest('.add');
+  if(a){document.getElementById('e'+a.dataset.i).classList.add('on');document.getElementById('in'+a.dataset.i).focus();return}
+  const s=e.target.closest('[data-save]');
+  if(s){const i=s.dataset.save,v=document.getElementById('in'+i).value.trim();blogs[people[i].n]=v;if(!v)delete blogs[people[i].n];save('ilnaejo-blogs',blogs);render()}
+});
+document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));render()}));
+document.getElementById('reset').addEventListener('click',()=>{st={};save(key,st);render()});
+render();
+}
+</script>
+</body>
+</html>
