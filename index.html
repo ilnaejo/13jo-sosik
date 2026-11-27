@@ -1,162 +1,410 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="theme-light">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>일내조 한 걸음 마실</title>
-<meta name="theme-color" content="#7b3fe4">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="한걸음 마실">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-<style>
-/* VOICE: 따뜻하고 간결한 아침 체크리스트
-   IDEA: 우편배달부의 순회 장부 — 집집마다 들르고 도장을 찍는다
-   PICTURE: 진행 링(오늘 몇 명 들렀나)과 한 줄씩 넘기는 방문 카드
-   COLOUR and TYPE: 아침 하늘 파랑 #2f5bd3, 종이 흰색, 도장 빨강 #d9462b / Gowun Dodum + Noto Sans KR
-   LAYOUT: 한 칼럼, 휴대폰 엄지 기준 큰 버튼 */
-:root{color-scheme:light dark;--bg:light-dark(#f3f5fb,#11151f);--card:light-dark(#fff,#1a2030);--ink:light-dark(#18202f,#e8ecf5);--mute:light-dark(#5d6679,#9aa4b8);--line:light-dark(#dfe4ef,#2a3246);--blue:#2f5bd3;--red:#d9462b;--ok:light-dark(#e8efff,#22305a)}
-:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
-*{box-sizing:border-box;min-width:0}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip}
-.wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
-header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
-h1{font:700 30px/1.1 "Gowun Dodum",sans-serif;margin:0 0 4px;text-wrap:balance}
-.sub{color:var(--mute);font-size:14px;margin:0}
-.ring{flex:none;width:92px;height:92px;position:relative}
-.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ring b{position:absolute;inset:0;display:grid;place-items:center;font:700 20px/1 "Gowun Dodum",sans-serif}
-.ring small{display:block;font:400 12px/1.2 "Noto Sans KR";color:var(--mute);text-align:center}
-.bar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
-.bar button{font:inherit;font-size:14px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
-.bar button[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;transition:opacity .2s}
-.card.done{background:var(--ok)}
-.top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.name{font:700 19px/1.2 "Gowun Dodum",sans-serif}
-.topic{color:var(--mute);font-size:13px}
-.stamp{flex:none;color:var(--red);font-weight:700;font-size:13px;border:2px solid var(--red);border-radius:6px;padding:0 6px;transform:rotate(-6deg)}
-.links{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:12px 0 10px}
-.links a,.links span,.links button{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;font-weight:700;text-decoration:none;font-size:15px}
-.ig{background:linear-gradient(135deg,#7b3fe4,#b03fc0);color:#fff}
-.bl{background:linear-gradient(135deg,#03c75a,#00a3a0);color:#fff}
-.none{border:1px dashed var(--line);color:var(--mute);font-weight:400!important}
-.add{border:1px dashed var(--blue);color:var(--blue);background:none;font:inherit;cursor:pointer}
-.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.checks label{display:flex;align-items:center;justify-content:center;gap:5px;min-height:40px;padding:0 6px;white-space:nowrap;border-radius:999px;border:1px solid var(--line);font-size:14px;cursor:pointer}
-.checks input{width:18px;height:18px;accent-color:var(--red)}
-.edit{display:none;gap:8px;margin-top:10px}
-.edit.on{display:flex}
-.edit input{flex:1;font:inherit;font-size:16px;min-height:44px;padding:0 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
-.edit button{font:inherit;min-height:44px;padding:0 14px;border-radius:10px;border:0;background:var(--blue);color:#fff}
-details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-top:18px}
-summary{font-weight:700;cursor:pointer}
-details li{margin:6px 0}
-.foot{color:var(--mute);font-size:13px;margin-top:14px}
-button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--red);outline-offset:2px}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>일내조 한 걸음 마실</title>
+  <meta name="theme-color" content="#7b3fe4">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="한걸음 마실">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="members.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+
+  <style>
+    /* VOICE: 다정하고 통통 튀는 아침 인사
+       IDEA: 한 걸음씩 이웃집에 마실 가는 발자국 산책길
+       PICTURE: 움직이는 그라데이션 하늘 위로 걸어가는 발자국, 숫자가 차오르는 진행 링
+       COLOUR and TYPE: 인스타 보라, 네이버 초록, 도장 코랄 / Inter + Noto Sans KR
+       LAYOUT: 휴대폰 한 칼럼, 엄지로 누르기 좋은 큰 버튼 */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; min-width: 0; }
+
+    :root, html.theme-light {
+      --bg: #f6f3ff;
+      --surface: #ffffff;
+      --surface-2: #f1ecff;
+      --text: #1d1730;
+      --text-2: #6b6485;
+      --accent: #7b3fe4;
+      --accent-2: #e0457b;
+      --border: rgba(123,63,228,0.14);
+      --naver: #03c75a;
+      --stamp: #ff5a5f;
+      --done: #eafaf1;
+    }
+    html.theme-dark {
+      --bg: #0f0b1a;
+      --surface: #1a1428;
+      --surface-2: #241c38;
+      --text: #f1edff;
+      --text-2: #a59cc4;
+      --accent: #9b6bff;
+      --accent-2: #ff6b9a;
+      --border: rgba(255,255,255,0.09);
+      --naver: #1fdc78;
+      --stamp: #ff6b70;
+      --done: #13281f;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      font-size: 16px; line-height: 1.55;
+      background: var(--bg); color: var(--text);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    h1 { font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; }
+    h2 { font-size: 1.15rem; font-weight: 700; }
+    p  { color: var(--text-2); }
+    .container { max-width: 640px; margin: 0 auto; padding: 0 16px 56px; }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative; overflow: hidden; border-radius: 0 0 28px 28px;
+      padding: 56px 20px 26px; color: #fff; margin-bottom: 18px;
+      background: linear-gradient(120deg, #7b3fe4, #c13584, #ff7a59, #03c75a, #7b3fe4);
+      background-size: 400% 400%; animation: sky 14s ease infinite;
+    }
+    @keyframes sky { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .hero h1 { color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.18); }
+    .hero p { color: rgba(255,255,255,.9); margin-top: 6px; font-weight: 500; }
+    .live {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700;
+      background: rgba(255,255,255,.22); padding: 4px 10px; border-radius: 999px; margin-bottom: 12px;
+      backdrop-filter: blur(6px);
+    }
+    .live i { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: blink 1.2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.25; transform:scale(.7)} }
+
+    .feet { position: absolute; inset: 0; pointer-events: none; }
+    .feet svg { position: absolute; width: 22px; height: 30px; fill: rgba(255,255,255,.55); opacity: 0; animation: step 6s infinite; }
+    @keyframes step { 0%{opacity:0; transform:scale(.6)} 10%{opacity:1; transform:scale(1)} 60%{opacity:.8} 80%,100%{opacity:0} }
+
+    .hero-row { display: flex; align-items: center; gap: 16px; margin-top: 18px; position: relative; }
+    .ring { flex: none; width: 96px; height: 96px; position: relative; }
+    .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring .track { stroke: rgba(255,255,255,.28); }
+    .ring .arc { stroke: #fff; transition: stroke-dasharray .8s cubic-bezier(.34,1.56,.64,1); }
+    .ring b { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-size: 22px; font-weight: 900; line-height: 1.1; }
+    .ring small { display: block; font-size: 11px; font-weight: 600; opacity: .9; }
+    .cheer { font-size: 15px; font-weight: 700; color: #fff; }
+
+    /* ========== FILTER BAR ========== */
+    .bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+    .chip {
+      font: inherit; font-size: 14px; font-weight: 600; min-height: 42px; padding: 0 16px;
+      border-radius: 999px; border: 1.5px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer;
+      transition: transform .15s, background .2s;
+    }
+    .chip:active { transform: scale(.94); }
+    .chip[aria-pressed=true] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ========== CARDS ========== */
+    .card {
+      position: relative; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 16px; margin-bottom: 12px;
+      box-shadow: 0 6px 20px rgba(123,63,228,.07); transition: box-shadow .15s ease, background .3s;
+      animation: pop .55s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .card:hover { box-shadow: 0 10px 30px rgba(123,63,228,.16); }
+    @keyframes pop { from{opacity:0; transform:translateY(18px) scale(.96)} to{opacity:1; transform:none} }
+    .card.done { background: var(--done); }
+
+    .top { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      flex: none; width: 52px; height: 52px; border-radius: 50%; padding: 3px; position: relative;
+      background: conic-gradient(#feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5, #feda75);
+      animation: spin 4s linear infinite;
+    }
+    .avatar span {
+      display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%;
+      background: var(--surface); border: 2px solid var(--surface); font-weight: 900; font-size: 18px; color: var(--accent);
+      animation: spin 4s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .card.done .avatar { background: #c9c3da; animation: none; }
+    .card.done .avatar span { animation: none; color: var(--text-2); }
+    .name { font-size: 18px; font-weight: 800; }
+    .topic { font-size: 13px; color: var(--text-2); }
+    .stamp {
+      margin-left: auto; flex: none; color: var(--stamp); font-weight: 900; font-size: 13px;
+      border: 2.5px solid var(--stamp); border-radius: 8px; padding: 1px 8px; transform: rotate(-8deg);
+      animation: stampIn .45s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes stampIn { from{opacity:0; transform:rotate(-8deg) scale(2.2)} to{opacity:1; transform:rotate(-8deg) scale(1)} }
+
+    .links { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 8px; margin: 14px 0 10px; }
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 50px; border-radius: 14px;
+      font-weight: 800; font-size: 15px; text-decoration: none; color: #fff; border: 0; position: relative; overflow: hidden;
+      transition: transform .12s;
+    }
+    .btn:active { transform: scale(.95); }
+    .btn::after {
+      content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+      transform: skewX(-20deg); animation: shine 3.2s ease-in-out infinite;
+    }
+    @keyframes shine { 0%,60%{left:-60%} 100%{left:130%} }
+    .ig { background: linear-gradient(135deg, #7b3fe4, #b03fc0, #e0457b); }
+    .bl { background: linear-gradient(135deg, #03c75a, #00b4a0); }
+    .card:not(.done) .ig { animation: glow 2s ease-in-out infinite; }
+    @keyframes glow { 0%,100%{box-shadow:0 0 0 0 rgba(176,63,192,.45)} 50%{box-shadow:0 0 0 7px rgba(176,63,192,0)} }
+    .card.done .btn::after { animation: none; }
+    .none, .add {
+      display: flex; align-items: center; justify-content: center; min-height: 50px; border-radius: 14px; font-size: 14px;
+      border: 1.5px dashed var(--border); color: var(--text-2); background: none; font-family: inherit;
+    }
+    .add { border-color: var(--naver); color: var(--naver); font-weight: 700; cursor: pointer; }
+
+    .checks { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; }
+    .checks label {
+      display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 42px; padding: 0 4px;
+      border-radius: 999px; border: 1.5px solid var(--border); font-size: 14px; font-weight: 600; cursor: pointer;
+      white-space: nowrap; transition: background .2s, border-color .2s, transform .12s; user-select: none;
+    }
+    .checks label:active { transform: scale(.93); }
+    .checks input { position: absolute; opacity: 0; pointer-events: none; }
+    .checks label.on { background: var(--accent); border-color: var(--accent); color: #fff; animation: boing .35s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes boing { 0%{transform:scale(.85)} 100%{transform:scale(1)} }
+
+    .ask { display: none; margin-top: 10px; padding: 12px; border-radius: 14px; background: var(--surface-2); animation: pop .35s cubic-bezier(.34,1.56,.64,1); }
+    .ask.on { display: block; }
+    .ask p { font-size: 14px; color: var(--text-2); }
+    .ask p b { color: var(--text); }
+    .ask .msg { margin: 8px 0; padding: 10px 12px; border-radius: 10px; background: var(--surface); border: 1px dashed var(--border); font-size: 14px; overflow-wrap: anywhere; }
+    .ask .msg span { color: var(--text-2); }
+    .ask .copy { width: 100%; min-height: 44px; border: 0; border-radius: 12px; font: inherit; font-weight: 800; color: #fff; background: linear-gradient(135deg, #7b3fe4, #e0457b); cursor: pointer; }
+    .ask .copy.ok { background: linear-gradient(135deg, #03c75a, #00b4a0); }
+    details { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 14px 16px; margin-top: 18px; }
+    summary { font-weight: 800; cursor: pointer; }
+    details li { margin: 8px 0 0 18px; color: var(--text-2); font-size: 15px; }
+    details b { color: var(--text); }
+    .foot { font-size: 13px; text-align: center; margin-top: 16px; }
+
+    /* confetti */
+    .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 900; overflow: hidden; }
+    .confetti i { position: absolute; top: -12px; width: 9px; height: 14px; border-radius: 2px; animation: fall 2.4s ease-in forwards; }
+    @keyframes fall { to { transform: translateY(105vh) rotate(720deg); opacity: .7; } }
+
+    /* ========== UTILITY MENU ========== */
+    .menu-container { position: fixed; top: 14px; right: 14px; z-index: 1000; }
+    .menu-toggle {
+      width: 40px; height: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,.4);
+      background: rgba(255,255,255,.25); color: #fff; cursor: pointer; font-size: 18px; backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .menu-dropdown {
+      display: none; position: absolute; top: 48px; right: 0; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 8px; min-width: 170px; box-shadow: 0 8px 30px rgba(0,0,0,.2);
+    }
+    .menu-dropdown.open { display: block; }
+    .menu-btn {
+      display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 8px; border: none;
+      background: transparent; color: var(--text); font-family: inherit; font-size: 14px; cursor: pointer; text-align: left;
+    }
+    .menu-btn:hover { background: var(--surface-2); }
+
+    .animate { animation: fadeInUp .5s ease both; }
+    .delay-1 { animation-delay: .1s; } .delay-2 { animation-delay: .2s; } .delay-3 { animation-delay: .3s; }
+    @keyframes fadeInUp { from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none} }
+
+    .skip-link { position: absolute; top: -40px; left: 16px; background: var(--accent); color: #fff; padding: 8px 16px; border-radius: 6px; z-index: 9999; }
+    .skip-link:focus { top: 16px; }
+    *:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+
+    @media print { .menu-container, .confetti, .feet { display: none !important; } .card { box-shadow: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <div class="ring" aria-hidden="true">
-    <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--line)" stroke-width="4"/><circle id="arc" cx="18" cy="18" r="15.5" fill="none" stroke="#8e44d9" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 100" pathLength="100"/></svg>
-    <b><span><span id="cnt">0</span>/<span id="tot">0</span><small>다녀왔어요</small></span></b>
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
+
+  <div class="menu-container">
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="메뉴">⋯</button>
+    <div class="menu-dropdown" id="menuDropdown">
+      <button class="menu-btn" onclick="cycleTheme()"><span>◐</span> 밝게 / 어둡게</button>
+      <button class="menu-btn" onclick="downloadPNG()"><span>⤓</span> 이미지로 저장</button>
+      <button class="menu-btn" onclick="window.print()"><span>⎙</span> 인쇄 / PDF</button>
+    </div>
   </div>
-  <div>
-    <h1>일내조 한 걸음 마실</h1>
-    <p class="sub" id="today"></p>
-  </div>
-</header>
 
-<div class="bar" role="group" aria-label="보기">
-  <button type="button" data-f="all" aria-pressed="true">전체</button>
-  <button type="button" data-f="todo" aria-pressed="false">아직 안 들른 분</button>
-  <button type="button" id="reset">오늘 체크 지우기</button>
-</div>
+  <main id="main-content">
+    <section class="hero" aria-label="오늘의 마실">
+      <div class="feet" id="feet" aria-hidden="true"></div>
+      <div class="live animate"><i></i><span id="today"></span></div>
+      <h1 class="animate delay-1">일내조<br>한 걸음 마실</h1>
+      <p class="animate delay-2">한 걸음씩, 서로의 소식에 마실 다녀와요</p>
+      <div class="hero-row animate delay-3">
+        <div class="ring" aria-label="오늘 다녀온 인원">
+          <svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5"/><circle id="arc" class="arc" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="0 100" pathLength="100"/></svg>
+          <b><span><span id="cnt">0</span>/<span id="tot">0</span><small>다녀왔어요</small></span></b>
+        </div>
+        <div class="cheer" id="cheer">오늘은 누구네 먼저 들러볼까요?</div>
+      </div>
+    </section>
 
-<div id="list"></div>
+    <div class="container">
+      <section aria-label="보기 선택">
+        <div class="bar" role="group">
+          <button type="button" class="chip" data-f="all" aria-pressed="true">전체</button>
+          <button type="button" class="chip" data-f="todo" aria-pressed="false">아직 안 들른 분</button>
+          <button type="button" class="chip" id="reset">오늘 체크 지우기</button>
+        </div>
+      </section>
 
-<details>
-  <summary>휴대폰 바탕화면에 저장하기 · 앱에서 더 쉽게 보는 법</summary>
-  <ul>
-    <li><b>갤럭시</b>: 크롬으로 열기 → 오른쪽 위 ⋮ → '홈 화면에 추가' (또는 '설치'). 카톡에서 열었다면 ⋮ → '다른 브라우저로 열기'부터.</li>
-    <li><b>아이폰</b>: 사파리로 열기 → 아래 공유 버튼(□↑) → '홈 화면에 추가'.</li>
-    <li><b>인스타 즐겨찾기</b>: 조원 프로필 → '팔로잉' 버튼 → '즐겨찾기에 추가'. 홈 왼쪽 위 Instagram 글자 → '즐겨찾기'를 누르면 조원 게시물만 모아 보여요.</li>
-    <li><b>인스타 알림</b>: 프로필 오른쪽 위 종 모양 → 게시물·릴스 알림 켜기. 새 글이 올라오면 바로 알려줘요.</li>
-    <li><b>스토리</b>: 프로필 사진 테두리가 색깔이면 24시간 안에 올린 스토리가 있어요. 사진을 누르면 볼 수 있어요.</li>
-    <li><b>네이버 블로그</b>: 이웃 추가 → 블로그 앱 '이웃새글'에서 새 글을 한눈에, 알림도 켤 수 있어요.</li>
-  </ul>
-</details>
-<p class="foot">체크는 이 기기에만 저장되고 날짜가 바뀌면 새로 시작해요. 블로그 주소를 모르는 분은 '블로그 추가'로 넣어 두세요.</p>
-</div>
+      <section id="list" aria-label="일내조 가족들"></section>
 
-<script>
-{
-const people=[
- {n:'수리테이블',t:'퍼실 · 다이어트 레시피',ig:'soori_table',bl:'hshw1006'},
- {n:'히쌤',t:'퍼실 · 필라테스·체형교정',ig:'enbcare_'},
- {n:'말리언니',t:'갱년기 관리 정보·강의',ig:'mali_unni'},
- {n:'늘품',t:'간호사 건강 브랜드',ig:'neulpoom.rn',bl:'neulpoom119'},
- {n:'아두라비',t:'1인 재활 PT샵',ig:'yong_han_pt'},
- {n:'새살닥터',t:'한의원 원장',ig:'saesal.doctor',bl:'soso_damdam'},
- {n:'남기자',t:'AI 소식·생각 글',ig:'kmpark_director',bl:'cavin7126'},
- {n:'밍키짱',t:'다이어트·필라테스',ig:'minky.zzang'},
- {n:'빛나는그녀',t:'첫 게시물 업로드',ig:'myttlov2s'},
- {n:'차곡희',t:'AI 콘텐츠',ig:'chagok.hee'},
- {n:'으네',t:'B2B 패키지 제작',ig:'cays.kr'},
- {n:'웰띠마마',t:'건강·식단 기록',ig:'myglowspot'},
- {n:'yuls(율스)',t:'몸과 마음·명상',ig:''},
- {n:'박다영',t:'계정 준비 중',ig:''}
-];
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const d=new Date(),key='ilnaejo-round-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-const wd='일월화수목금토'[d.getDay()];
-document.getElementById('today').textContent=`${d.getMonth()+1}/${d.getDate()}(${wd}) · 가볍게 한 분씩 마실 다녀와요`;
-const load=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return{}}};
-const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-let st=load(key),blogs=load('ilnaejo-blogs'),filter='all';
-const blogId=p=>blogs[p.n]||p.bl||'';
-const blogUrl=v=>/^https?:\/\//.test(v)?v:'https://m.blog.naver.com/'+v;
-const list=document.getElementById('list');
-function render(){
-  let done=0;
-  list.innerHTML=people.map((p,i)=>{
-    const s=st[p.n]||{};const ok=s.seen;if(ok)done++;
-    if(filter==='todo'&&ok)return'';
-    const b=blogId(p);
-    return `<div class="card${ok?' done':''}"><div class="top"><div><div class="name">${esc(p.n)}님</div><div class="topic">${esc(p.t)}</div></div>${ok?'<span class="stamp">다녀감</span>':''}</div>
-    <div class="links">${p.ig?`<a class="ig" href="https://www.instagram.com/${esc(p.ig)}/" target="_blank" rel="noopener">인스타 열기</a>`:'<span class="none">인스타 준비 중</span>'}
-    ${b?`<a class="bl" href="${esc(blogUrl(b))}" target="_blank" rel="noopener">블로그 열기</a>`:`<button type="button" class="add" data-i="${i}">블로그 추가</button>`}</div>
-    <div class="checks"><label><input type="checkbox" data-i="${i}" data-k="seen"${s.seen?' checked':''}>봤어요</label><label><input type="checkbox" data-i="${i}" data-k="like"${s.like?' checked':''}>좋아요</label><label><input type="checkbox" data-i="${i}" data-k="cmt"${s.cmt?' checked':''}>댓글</label></div>
-    <div class="edit" id="e${i}"><input id="in${i}" placeholder="블로그 아이디 또는 주소" value="${esc(b)}"><button type="button" data-save="${i}">저장</button></div></div>`;
-  }).join('')||'<p class="sub">오늘 마실을 모두 다녀왔어요. 고마워요!</p>';
-  const tot=people.length;
-  document.getElementById('cnt').textContent=done;
-  document.getElementById('tot').textContent=tot;
-  document.getElementById('arc').setAttribute('stroke-dasharray',`${done/tot*100} 100`);
-}
-list.addEventListener('change',e=>{
-  const t=e.target,p=people[t.dataset.i];if(!p)return;
-  if(t.classList.contains('ed')){document.getElementById('e'+t.dataset.i).classList.toggle('on',t.checked);return}
-  st[p.n]=st[p.n]||{};st[p.n][t.dataset.k]=t.checked;
-  if(t.dataset.k!=='seen'&&t.checked)st[p.n].seen=true;
-  save(key,st);render();
-});
-list.addEventListener('click',e=>{
-  const a=e.target.closest('.add');
-  if(a){document.getElementById('e'+a.dataset.i).classList.add('on');document.getElementById('in'+a.dataset.i).focus();return}
-  const s=e.target.closest('[data-save]');
-  if(s){const i=s.dataset.save,v=document.getElementById('in'+i).value.trim();blogs[people[i].n]=v;if(!v)delete blogs[people[i].n];save('ilnaejo-blogs',blogs);render()}
-});
-document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.f;document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));render()}));
-document.getElementById('reset').addEventListener('click',()=>{st={};save(key,st);render()});
-render();
-}
-</script>
+      <section>
+        <details>
+          <summary>휴대폰 바탕화면에 저장하기 · 더 쉽게 보는 법</summary>
+          <ul>
+            <li><b>갤럭시</b>: 크롬으로 열기 → 오른쪽 위 ⋮ → '홈 화면에 추가'. 카톡에서 열었다면 ⋮ → '다른 브라우저로 열기'부터.</li>
+            <li><b>아이폰</b>: 사파리로 열기 → 아래 공유 버튼(□↑) → '홈 화면에 추가'.</li>
+            <li><b>인스타 즐겨찾기</b>: 프로필 → '팔로잉' → '즐겨찾기에 추가'. 홈 왼쪽 위 Instagram → '즐겨찾기'에서 조원 글만 모아 봐요.</li>
+            <li><b>스토리</b>: 프로필 사진 테두리가 알록달록하면 24시간 안에 올린 스토리가 있어요.</li>
+            <li><b>네이버 블로그</b>: 이웃 추가 → 블로그 앱 '이웃새글'에서 새 글을 한눈에.</li>
+          </ul>
+        </details>
+        <p class="foot">체크는 내 휴대폰에만 저장되고, 날짜가 바뀌면 새로 시작해요.<br>인스타·블로그가 새로 생기면 카톡방에 알려주세요!</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  <script>
+    var themes = ['light', 'dark'];
+    var currentTheme = 0;
+    function cycleTheme() {
+      currentTheme = (currentTheme + 1) % themes.length;
+      var theme = themes[currentTheme];
+      document.documentElement.className = 'theme-' + theme;
+      try { localStorage.setItem('masil-theme', theme); } catch (e) {}
+    }
+    try {
+      var savedTheme = localStorage.getItem('masil-theme');
+      if (savedTheme && themes.indexOf(savedTheme) !== -1) { currentTheme = themes.indexOf(savedTheme); document.documentElement.className = 'theme-' + savedTheme; }
+    } catch (e) {}
+
+    function toggleMenu() { document.getElementById('menuDropdown').classList.toggle('open'); }
+    document.addEventListener('click', function (e) {
+      var c = document.querySelector('.menu-container');
+      if (c && !c.contains(e.target)) document.getElementById('menuDropdown').classList.remove('open');
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.getElementById('menuDropdown').classList.remove('open'); });
+
+    function downloadPNG() {
+      var menu = document.querySelector('.menu-container');
+      menu.style.display = 'none';
+      if (typeof htmlToImage === 'undefined') { menu.style.display = ''; return; }
+      htmlToImage.toPng(document.body, { pixelRatio: 2 }).then(function (dataUrl) {
+        var link = document.createElement('a'); link.download = 'ilnaejo-masil.png'; link.href = dataUrl; link.click();
+      }).catch(function () {}).finally(function () { menu.style.display = ''; });
+    }
+
+    var cheers = ['오늘은 누구네 먼저 들러볼까요?', '좋아요! 한 걸음 내디뎠어요', '마실 신났다, 계속 가볼까요?', '절반 넘었어요, 거의 다 왔어요!', '오늘 마실 완주! 고마워요'];
+
+    var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+    var d = new Date();
+    var key = 'masil-' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    document.getElementById('today').textContent = (d.getMonth() + 1) + '/' + d.getDate() + '(' + '일월화수목금토'[d.getDay()] + ') 오늘의 마실';
+    var load = function (k) { try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch (e) { return {}; } };
+    var save = function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+    var st = load(key), filter = 'all', lastDone = -1;
+    var blogId = function (p) { return p.bl || ''; };
+    var blogUrl = function (v) { return /^https?:\/\//.test(v) ? v : 'https://m.blog.naver.com/' + v; };
+    var list = document.getElementById('list');
+
+    function render() {
+      var done = 0, html = '', shown = 0;
+      people.forEach(function (p, i) {
+        var s = st[p.n] || {}; var ok = !!s.seen; if (ok) done++;
+        if (filter === 'todo' && ok) return;
+        var b = blogId(p);
+        html += '<article class="card' + (ok ? ' done' : '') + '" style="animation-delay:' + (shown++ * 0.05) + 's">' +
+          '<div class="top"><div class="avatar"><span>' + esc(p.n.charAt(0)) + '</span></div><div><div class="name">' + esc(p.n) + '님</div><div class="topic">' + esc(p.t) + '</div></div>' + (ok ? '<span class="stamp">다녀감</span>' : '') + '</div>' +
+          '<div class="links">' +
+          (p.ig ? '<a class="btn ig" href="https://www.instagram.com/' + esc(p.ig) + '/" target="_blank" rel="noopener">인스타 열기</a>' : '<button type="button" class="add ask-ig" data-i="' + i + '" data-w="인스타">인스타 알려주기</button>') +
+          (b ? '<a class="btn bl" href="' + esc(blogUrl(b)) + '" target="_blank" rel="noopener">블로그 열기</a>' : '<button type="button" class="add" data-i="' + i + '" data-w="블로그">블로그 알려주기</button>') +
+          '</div><div class="checks">' +
+          [['seen', '봤어요'], ['like', '좋아요'], ['cmt', '댓글']].map(function (c) {
+            return '<label class="' + (s[c[0]] ? 'on' : '') + '"><input type="checkbox" data-i="' + i + '" data-k="' + c[0] + '"' + (s[c[0]] ? ' checked' : '') + '>' + c[1] + '</label>';
+          }).join('') +
+          '</div><div class="ask" id="e' + i + '"></div></article>';
+      });
+      list.innerHTML = html || '<p class="foot">오늘 마실을 모두 다녀왔어요. 고마워요!</p>';
+      var tot = people.length;
+      document.getElementById('cnt').textContent = done;
+      document.getElementById('tot').textContent = tot;
+      document.getElementById('arc').setAttribute('stroke-dasharray', (done / tot * 100) + ' 100');
+      var idx = done === 0 ? 0 : done === tot ? 4 : done >= tot / 2 ? 3 : done >= 3 ? 2 : 1;
+      document.getElementById('cheer').textContent = cheers[idx];
+      if (done === tot && lastDone !== -1 && lastDone < tot) burst();
+      lastDone = done;
+    }
+
+    function burst() {
+      var box = document.getElementById('confetti'), cols = ['#7b3fe4', '#e0457b', '#03c75a', '#ff7a59', '#feda75'], h = '';
+      for (var k = 0; k < 60; k++) {
+        h += '<i style="left:' + (Math.random() * 100) + '%;background:' + cols[k % 5] + ';animation-delay:' + (Math.random() * .6) + 's;animation-duration:' + (1.8 + Math.random()) + 's"></i>';
+      }
+      box.innerHTML = h;
+      setTimeout(function () { box.innerHTML = ''; }, 3200);
+    }
+
+    function feet() {
+      var box = document.getElementById('feet'), h = '';
+      var path = '<svg viewBox="0 0 22 30"><ellipse cx="11" cy="19" rx="7" ry="10"/><circle cx="5" cy="5" r="2.4"/><circle cx="9.5" cy="3" r="2.2"/><circle cx="14" cy="3.6" r="2"/><circle cx="17.6" cy="6" r="1.7"/></svg>';
+      for (var k = 0; k < 8; k++) {
+        var x = 52 + k * 6, y = 78 - k * 9 + (k % 2 ? 6 : -4);
+        h += path.replace('<svg', '<svg style="left:' + x + '%;top:' + y + '%;animation-delay:' + (k * 0.55) + 's;transform:rotate(' + (k % 2 ? 18 : 8) + 'deg)"');
+      }
+      box.innerHTML = h;
+    }
+
+    list.addEventListener('change', function (e) {
+      var t = e.target, p = people[t.dataset.i]; if (!p || !t.dataset.k) return;
+      st[p.n] = st[p.n] || {}; st[p.n][t.dataset.k] = t.checked;
+      if (t.dataset.k !== 'seen' && t.checked) st[p.n].seen = true;
+      save(key, st); render();
+    });
+    list.addEventListener('click', function (e) {
+      var a = e.target.closest('.add');
+      if (a) {
+        var p = people[a.dataset.i], w = a.dataset.w, box = document.getElementById('e' + a.dataset.i);
+        var msg = '[한 걸음 마실] ' + p.n + ' ' + w + ' 주소 알려드려요: ';
+        if (box.classList.contains('on') && box.dataset.w === w) { box.classList.remove('on'); return; }
+        box.dataset.w = w;
+        box.innerHTML = '<p><b>' + esc(w) + ' 주소는 일내조 카톡방에 남겨주세요!</b><br>남기자님이 확인해서 모두의 마실길에 넣어드려요.</p>' +
+          '<div class="msg">' + esc(msg) + '<span>(여기에 주소 붙여넣기)</span></div>' +
+          '<button type="button" class="copy" data-msg="' + esc(msg) + '">문구 복사하기</button>';
+        box.classList.add('on'); return;
+      }
+      var c = e.target.closest('.copy');
+      if (c) {
+        var done = function () { c.textContent = '복사됐어요! 카톡방에 붙여넣기'; c.classList.add('ok'); };
+        try { navigator.clipboard.writeText(c.dataset.msg).then(done, function () { c.textContent = '길게 눌러 직접 복사해 주세요'; }); }
+        catch (err) { c.textContent = '길게 눌러 직접 복사해 주세요'; }
+      }
+    });
+    document.querySelectorAll('[data-f]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        filter = b.dataset.f;
+        document.querySelectorAll('[data-f]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+        render();
+      });
+    });
+    document.getElementById('reset').addEventListener('click', function () { st = {}; save(key, st); render(); });
+
+    feet();
+    render();
+  </script>
 </body>
 </html>
