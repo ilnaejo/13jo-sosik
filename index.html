@@ -309,6 +309,24 @@
       }).catch(function () {}).finally(function () { menu.style.display = ''; });
     }
 
+    // 기본 명단 (members.js가 없을 때도 보이도록). members.js가 있으면 그 내용이 우선이에요.
+    var defaultPeople = [
+      { n: '수리테이블', t: '퍼실 · 다이어트 레시피', ig: 'soori_table', bl: 'hshw1006' },
+      { n: '히쌤', t: '퍼실 · 필라테스·체형교정', ig: 'enbcare_' },
+      { n: '말리언니', t: '갱년기 관리 정보·강의', ig: 'mali_unni' },
+      { n: '늘품', t: '간호사 건강 브랜드', ig: 'neulpoom.rn', bl: 'neulpoom119' },
+      { n: '아두라비', t: '1인 재활 PT샵', ig: 'yong_han_pt' },
+      { n: '새살닥터', t: '한의원 원장', ig: 'saesal.doctor', bl: 'soso_damdam' },
+      { n: '남기자', t: 'AI 소식·생각 글', ig: 'kmpark_director', bl: 'cavin7126' },
+      { n: '밍키짱', t: '다이어트·필라테스', ig: 'minky.zzang' },
+      { n: '빛나는그녀', t: '첫 게시물 업로드', ig: 'myttlov2s' },
+      { n: '차곡희', t: 'AI 콘텐츠', ig: 'chagok.hee' },
+      { n: '으네', t: 'B2B 패키지 제작', ig: 'cays.kr' },
+      { n: '웰띠마마', t: '건강·식단 기록', ig: 'myglowspot' },
+      { n: 'yuls(율스)', t: '몸과 마음·명상', ig: '' },
+      { n: '박다영', t: '계정 준비 중', ig: '' }
+    ];
+    if (typeof people === 'undefined' || !people || !people.length) { var people = defaultPeople; }
     var cheers = ['오늘은 누구네 먼저 들러볼까요?', '좋아요! 한 걸음 내디뎠어요', '마실 신났다, 계속 가볼까요?', '절반 넘었어요, 거의 다 왔어요!', '오늘 마실 완주! 고마워요'];
 
     var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
